@@ -1,0 +1,8 @@
+com\example\demo\DemoApplication.class
+com\example\demo\service\StudentService.class
+com\example\demo\entity\StudentIdCard.class
+com\example\demo\repository\StudentRepository.class
+com\example\demo\entity\Student.class
+com\example\demo\repository\StudentIdCardRepository.class
+com\example\demo\controller\StudentController.class
+com\example\demo\request\StudentRegisterRequest.class
