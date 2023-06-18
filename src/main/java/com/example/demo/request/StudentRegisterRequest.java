@@ -10,3 +10,5 @@ public class StudentRegisterRequest {
     private final String lastName;
     private final int age;
 }
+/** W jakim celu została utworzona ta klasa z wybranymi polami klasy Student?
+ * Dlaczego pola są final?? */

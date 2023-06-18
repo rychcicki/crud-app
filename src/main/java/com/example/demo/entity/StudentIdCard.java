@@ -12,6 +12,7 @@ import lombok.ToString;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "student_id_card_number_unique",
+                        /** Skoro tylko jedna kolumna jest unikalna, to czy nie wystarczy @Column(unique=true) ?? */
                         columnNames = "card_number"
                 )
         }
@@ -44,8 +45,11 @@ public class StudentIdCard {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
+            /** Czy to zawsze funkcjonuje jako konkatenacja nazwy encji + "_" + nazwa kolumny (klucza)??  */
             name = "student_id",
+            /** Czy to jest kolumna klucza głównego, czy obcego?? Tj. id w encji Student czy StudentIdCard?? */
             referencedColumnName = "id",
+            /** Skąd wiadomo, która kolumna jest oznaczone jako foreign key?? Co poniższy zapis w ogóle oznacza??*/
             foreignKey = @ForeignKey(name = "student_id_fk")
     )
     private Student student;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 class StudentController {
     private final StudentService userService;
-
+/** Zwątpiłem już, gdzie mają być te metody CRUDowe... Tutaj czy w StudentService??  */
     @PostMapping("/register")
     void registerUser(@RequestBody StudentRegisterRequest request) {
         userService.registerStudent(request);

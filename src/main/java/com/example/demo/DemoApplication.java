@@ -10,8 +10,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-
 @SpringBootApplication
 public class DemoApplication {
 
@@ -19,7 +17,7 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-//    @Bean
+    //    @Bean
 //    CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
 //        return args -> {
 //            Student maria = new Student("Maria", "Jones", 21, "maria.jones@gmail.com");
@@ -49,27 +47,27 @@ public class DemoApplication {
 //            System.out.println(studentRepository.count());
 //        };
 //    }
-@Bean
-CommandLineRunner commandLineRunner(StudentRepository studentRepository,
-                                    StudentIdCardRepository studentIdCardRepository) {
-    return args -> {
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String email = String.format("%s.%s@gmail.com", firstName,lastName);
-        Student student = new Student(
-                firstName,
-                lastName,
-                faker.number().numberBetween(18,55),
-                email
-        );
-        StudentIdCard studentIdCard = new StudentIdCard("123456789", student);
-        studentIdCardRepository.save(studentIdCard);
-        studentRepository.save(student);
-        studentRepository.findById(1L).ifPresent(System.out::println);
-        studentIdCardRepository.findById(1L).ifPresent(System.out::println);
-        studentRepository.deleteById(1L);
-    };
-}
-
+    @Bean
+    CommandLineRunner commandLineRunner(StudentRepository studentRepository,
+                                        StudentIdCardRepository studentIdCardRepository) {
+        return args -> {
+            Faker faker = new Faker();
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            String email = String.format("%s.%s@gmail.com", firstName, lastName);
+            Student student = new Student(
+                    firstName,
+                    lastName,
+                    faker.number().numberBetween(18, 55),
+                    email
+            );
+            StudentIdCard studentIdCard = new StudentIdCard("123456789", student);
+            /** Czy to jest inny sposób metod CRUD-owych (bez pisania metod)??? */
+            studentIdCardRepository.save(studentIdCard);
+            studentRepository.save(student);
+            studentRepository.findById(1L).ifPresent(System.out::println);
+            studentIdCardRepository.findById(1L).ifPresent(System.out::println);
+            studentRepository.deleteById(1L);
+        };
+    }
 }
