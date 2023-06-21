@@ -24,6 +24,9 @@ public class StudentService {
         return studentRepository.findById(id)
                 .orElseThrow();
     }
+//    public Student getStudentByName(String input) {
+//        return studentRepository.findStudentByFirstName(input);
+//    }
 
     public Student updateStudent(Student studentToUpdate, Student student) {
         studentToUpdate.setFirstName(student.getFirstName());

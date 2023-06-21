@@ -6,7 +6,8 @@ import com.example.demo.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/user")
+@RestController
+@RequestMapping("/users")
 @RequiredArgsConstructor
 class StudentController {
     private final StudentService userService;
@@ -18,7 +19,7 @@ class StudentController {
     }
 
     @GetMapping("/students/{id}")
-    Student readStudent(@PathVariable("{id}") Long id) {
+    Student readStudent(@PathVariable Long id) {
         return userService.getStudent(id);
     }
 
