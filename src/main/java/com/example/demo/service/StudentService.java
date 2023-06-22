@@ -2,7 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Student;
 import com.example.demo.repository.StudentRepository;
-import com.example.demo.request.StudentRegisterRequest;
+import com.example.demo.request.StudentRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class StudentService {
     private final StudentRepository studentRepository;
 
-    public void registerStudent(StudentRegisterRequest request) {
+    public void registerStudent(StudentRequest request) {
         Student student = new Student();
         student.setAge(request.getAge());
         student.setFirstName(request.getFirstName());
@@ -27,12 +28,14 @@ public class StudentService {
 //    public Student getStudentByName(String input) {
 //        return studentRepository.findStudentByFirstName(input);
 //    }
-
-    public Student updateStudent(Student studentToUpdate, Student student) {
-        studentToUpdate.setFirstName(student.getFirstName());
-        studentToUpdate.setLastName(student.getLastName());
-        studentToUpdate.setAge(student.getAge());
-        return studentRepository.save(studentToUpdate);
+@Transactional
+    public Student updateStudent(StudentRequest studentUpdate, Long id) {
+        Student studentToEdit = studentRepository.findById(id)
+                .orElseThrow();
+        studentToEdit.setFirstName(studentUpdate.getFirstName());
+        studentToEdit.setLastName(studentUpdate.getLastName());
+        studentToEdit.setAge(studentUpdate.getAge());
+        return studentToEdit;
     }
 
     public void deleteStudent(Long id) {
