@@ -15,3 +15,5 @@ public class StudentRequest {
 
 //bo ta klasa jest zrobiona na potrzeby komunikacji z API
 /** Dodałem pole id, aby móc pobrać id w metodzie Update.*/
+//DTO to jest obiekt ktory tworzymy na potrzeby zwracania go przez api zeby nie zwracac calych encji.
+// Wiec robiac metode np getAllStudents() powinienes zrobic StudentResponse i przekazac tylko to co musisz
