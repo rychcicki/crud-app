@@ -34,17 +34,15 @@ public class StudentService {
 //    public Student getStudentByName(String input) {
 //        return studentRepository.findStudentByFirstName(input);
 //    }
-@Transactional
-/** W sumie to nie jest takie oczywiste, ale doszedłem do tego, że działa w sposób i dzięki
- * wzorcowi strukturalnemu proxy (pełnomocnik) oraz AOP, przy czym AOP to już konkretna kobyła
- * i nie bardzo wiem, kiedy należy stosować adnotacje AOP, a kiedy wystarczy tylko @Transactional*/
+//@Transactional
     public Student updateStudent(StudentRequest studentRequest, Long id) {
         Student studentToEdit = studentRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalStateException("There is no student with id: " + id + " in database."));
+        /** Już kiedyś próbowałem i czy jest jakiś sposób, żeby powyższy zapis zrobić poprzez referencję np. .orElseThrow(IllegalStateException::new i co dalej?*/
         studentToEdit.setFirstName(studentRequest.getFirstName());
         studentToEdit.setLastName(studentRequest.getLastName());
         studentToEdit.setAge(studentRequest.getAge());
-        return studentToEdit;
+        return studentRepository.save(studentToEdit);
     }
     /** Powyższa metoda jest typem Update, czyli ma za zadanie aktualizować studenta.
      * Jak dla mnie wszystko jest klarowne w zakresie, jaki poznałem.
