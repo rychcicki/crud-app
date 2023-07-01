@@ -3,6 +3,9 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity(name = "Student")
 @Getter
 @Setter
@@ -50,6 +53,14 @@ public class Student {
     @OneToOne(mappedBy = "student",
             orphanRemoval = true)
     private StudentIdCard studentIdCard;
+
+    @OneToMany(
+            mappedBy = "student",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Book> books = new ArrayList<>();
 
     public Student(String firstName, String lastName, int age, String email) {
         this.firstName = firstName;
