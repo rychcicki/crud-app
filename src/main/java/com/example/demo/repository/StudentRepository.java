@@ -33,4 +33,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 //    @Override
 //    @Query( value = "select * from Student")
 //    List<Student> findAll();
+    /** Nie rozumiem sensu metod-zapytań i samych zapytań w repository....
+     *  Gdzie one są/mają być wywoływane??*/
 }

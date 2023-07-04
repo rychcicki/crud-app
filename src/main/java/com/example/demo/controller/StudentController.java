@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class StudentController {
     private final StudentService userService;
-//w controller sa tylko requesty z wywolaniem metod z serwisu. Tu zadnej logiki biznesowej ma nie byc. Jedynie punkt dostepowy do api
+    //w controller sa tylko requesty z wywolaniem metod z serwisu. Tu zadnej logiki biznesowej ma nie byc. Jedynie punkt dostepowy do api
     @PostMapping("/students")
     void registerUser(@RequestBody StudentRequest request) {
         userService.registerStudent(request);
@@ -22,7 +22,7 @@ class StudentController {
     }
     @PutMapping("/students")
     Student updateStudent(@RequestBody StudentRequest studentToUpdate, Long id) {
-        return userService.updateStudent(studentToUpdate,id);
+        return userService.updateStudent(studentToUpdate, id);
     }
     @DeleteMapping("/students/{id}")
     void deleteStudent(@PathVariable("id") Long id) {

@@ -37,8 +37,15 @@ public class Book {
     )
     private Student student;
 
+    /**
+     * Dlaczego nie użyłeś @AllArgsConstructor ??
+     * Czy nie lepiej użyć w tym wypadku LocalDate ??
+     */
     public Book(LocalDateTime createdAt, String bookName) {
         this.createdAt = createdAt;
         this.bookName = bookName;
     }
 }
+/** 1. Jak przetłumaczyć persistence?? np. JPA ??
+ *  2. Co to jest ten ORM?? Hibernate podobno nim jest,ale co to??
+ *  3. Gdzie jest granica między Hibernate a JPA??*/

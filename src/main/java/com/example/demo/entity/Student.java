@@ -1,7 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,9 @@ public class Student {
             columnDefinition = "TEXT"
     )
     private String firstName;
-    /** Skoro tutaj nie ma adnotacji @Column, czy pole lastName nie jest kolumną tabeli?? */
+    /**
+     * Skoro tutaj nie ma adnotacji @Column, czy pole lastName nie jest kolumną tabeli??
+     */
     private String lastName;
     private int age;
     @Column(name = "email",
@@ -49,7 +53,9 @@ public class Student {
             columnDefinition = "TEXT")
     private String email;
 
-    /** Dlaczego mappedBy stosuje się właśnie w tym miejscu, a nie w polach, które są związane relacją w klasach?? */
+    /**
+     * MappedBy dodaje się na obcym obiekcie
+     */
     @OneToOne(mappedBy = "student",
             orphanRemoval = true)
     private StudentIdCard studentIdCard;
@@ -57,8 +63,9 @@ public class Student {
     @OneToMany(
             mappedBy = "student",
             orphanRemoval = true,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch = FetchType.LAZY
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, // cascade nie ma domyślnego typu; trzeba zawsze ustawić
+            /** To po co jest orphanRemoval = true, skoro ustawiamy CascadeType.REMOVE ??? Jaka jest różnica między nimi??*/
+            fetch = FetchType.LAZY // rozumiem, że jest to domyślne i nie trzeba tego ustawiać dla @...toMany
     )
     private List<Book> books = new ArrayList<>();
 

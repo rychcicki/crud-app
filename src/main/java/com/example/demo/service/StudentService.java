@@ -1,18 +1,27 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Book;
 import com.example.demo.entity.Student;
+import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.StudentRepository;
+import com.example.demo.request.BookRequest;
 import com.example.demo.request.StudentRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class StudentService {
     private final StudentRepository studentRepository;
+    private final BookRepository bookRepository;
 
     public void registerStudent(StudentRequest request) {
         Student student = new Student();
@@ -21,6 +30,9 @@ public class StudentService {
         student.setLastName(request.getLastName());
         student.setEmail(request.getEmail());
         studentRepository.save(student);
+        // tak działa LAZY
+        Student student1 = studentRepository.findById(1L).get();
+        List<Book> books = student1.getBooks();
     }
 
     public Student getStudent(Long id) {
@@ -44,13 +56,9 @@ public class StudentService {
         studentToEdit.setAge(studentRequest.getAge());
         return studentRepository.save(studentToEdit);
     }
-    /** Powyższa metoda jest typem Update, czyli ma za zadanie aktualizować studenta.
-     * Jak dla mnie wszystko jest klarowne w zakresie, jaki poznałem.
-     * Metoda pobiera studenta z bazy (id), przekazuje (get) dane z requesta do pobranego studenta (set),
-     * zapisuje w bazie zmienionego studenta dzięki adnotacji @Transactional poprzez return studentToEdit.
-     * Hibernate ma wbudowany mechanizm "automatic dirty checking", który sprawdza, czy encja pobrana wcześniej przez hibernate'a
-     * zmieniła stan. Jeżeli tak, to automatycznie ją zapisuje. Jeżeli nie zmieniła stanu, to i tak nic się
-     * nie uaktualni.*/
+    /** Hibernate ma wbudowany mechanizm "automatic dirty checking", który sprawdza, czy encja pobrana wcześniej
+     * przez hibernate'a zmieniła stan. Jeżeli tak, to automatycznie ją zapisuje. Jeżeli nie zmieniła stanu,
+     * to i tak nic się nie uaktualni.*/
 
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
