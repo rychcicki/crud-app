@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity(name = "Student")
 @Getter
 @Setter
+@ToString
 @Table(
         name = "student",
         uniqueConstraints = {
@@ -25,27 +27,21 @@ public class Student {
              * Nazwa generatora i nazwa sekwencji w bazie danych niewiele mi mówi...             */
             name = "student_sequence",
             sequenceName = "student_sequence",
-            /** Czy to jest wartość, o którą zwiększa się kolejny numer id,
-             * czy liczebność jednorazowych 'wygenerowań' numerów id??  */
-            allocationSize = 1)
+            allocationSize = 1) //Jest to wartość, o którą zwiększa się kolejny numer id
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            /** Do nazwy czego odwołuje się nazwa w generatorze?? (name, sequenceName) */
+            /** Do nazwy czego odwołuje się nazwa w generatorze?? (name, sequenceName)?
+             * Chyba do name*/
             generator = "student_sequence")
     @Column(
             name = "id",
-            nullable = false
-    )
+            nullable = false)
     private Long id;
     @Column(
             name = "first_name",
             nullable = false,
-            columnDefinition = "TEXT"
-    )
+            columnDefinition = "TEXT")
     private String firstName;
-    /**
-     * Skoro tutaj nie ma adnotacji @Column, czy pole lastName nie jest kolumną tabeli??
-     */
     private String lastName;
     private int age;
     @Column(name = "email",
@@ -53,20 +49,20 @@ public class Student {
             columnDefinition = "TEXT")
     private String email;
 
-    /**
-     * MappedBy dodaje się na obcym obiekcie
-     */
+    /** MappedBy dodaje się na obcym obiekcie */
     @OneToOne(mappedBy = "student",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
             orphanRemoval = true)
     private StudentIdCard studentIdCard;
-
     @OneToMany(
             mappedBy = "student",
             orphanRemoval = true,
             cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, // cascade nie ma domyślnego typu; trzeba zawsze ustawić
-            /** To po co jest orphanRemoval = true, skoro ustawiamy CascadeType.REMOVE ??? Jaka jest różnica między nimi??*/
-            fetch = FetchType.LAZY // rozumiem, że jest to domyślne i nie trzeba tego ustawiać dla @...toMany
+            fetch = FetchType.LAZY // domyślnie .LAZY dla @...toMany
     )
+    @ToString.Exclude
+    /** Musisz wyłączyć to pole z @ToString albo nadpisać metodę toString() bez tego pola.
+     *  W przeciwnym razie rzucony zostanie LazyInitializaitonException */
     private List<Book> books = new ArrayList<>();
 
     public Student(String firstName, String lastName, int age, String email) {
@@ -76,15 +72,16 @@ public class Student {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", studentIdCard=" + studentIdCard +
-                '}';
-    }
+    /** Tylko bez List<Book> books. Inaczej rzucony zostanie LazyInitializaitonException */
+//    @Override
+//    public String toString() {
+//        return "Student{" +
+//                "id=" + id +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", age=" + age +
+//                ", email='" + email + '\'' +
+//                ", studentIdCard=" + studentIdCard +
+//                '}';
+//    }
 }

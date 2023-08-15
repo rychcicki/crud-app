@@ -1,10 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +14,9 @@ import java.time.LocalDateTime;
 public class Book {
     @Id
     @SequenceGenerator(name = "book_sequence", sequenceName = "book_sequence", allocationSize = 1)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "book_sequence")
     @Column(updatable = false)
     private Long id;
 
@@ -26,7 +26,9 @@ public class Book {
     @Column(nullable = false)
     private String bookName;
 
-    @ManyToOne
+    @ManyToOne(
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
     @JoinColumn(
             name = "student_id",
             nullable = false,
@@ -37,15 +39,17 @@ public class Book {
     )
     private Student student;
 
-    /**
-     * Dlaczego nie użyłeś @AllArgsConstructor ??
-     * Czy nie lepiej użyć w tym wypadku LocalDate ??
-     */
-    public Book(LocalDateTime createdAt, String bookName) {
-        this.createdAt = createdAt;
+    public Book(String bookName, LocalDateTime createdAt) {
         this.bookName = bookName;
+        this.createdAt = createdAt;
+    }
+
+    public Book(String bookName, LocalDateTime createdAt, Student student) {
+        this.bookName = bookName;
+        this.createdAt = createdAt;
+        this.student = student;
     }
 }
-/** 1. Jak przetłumaczyć persistence?? np. JPA ??
- *  2. Co to jest ten ORM?? Hibernate podobno nim jest,ale co to??
- *  3. Gdzie jest granica między Hibernate a JPA??*/
+/**
+ * 1. Gdzie jest granica między Hibernate a JPA??
+ */

@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class StudentService {
+    //inject bean spring
     private final StudentRepository studentRepository;
     private final BookRepository bookRepository;
 
@@ -29,20 +30,20 @@ public class StudentService {
         student.setFirstName(request.getFirstName());
         student.setLastName(request.getLastName());
         student.setEmail(request.getEmail());
-        studentRepository.save(student);
+
         // tak działa LAZY
         Student student1 = studentRepository.findById(1L).get();
         List<Book> books = student1.getBooks();
+//        student.setBooks(books);
+//        studentRepository.save(student);
     }
 
     public Student getStudent(Long id) {
         log.info("My log. Practise makes perfect ;-) ");
         return studentRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalStateException("There is no student with id: " + id + " in database."));
     }
-    /** Myślałem wcześniej, że NullPointerException, ale sprawdziłem w dokumentacji, że NoSuchElementException.
-     * Bardziej pasowałby chyba NullPointerException, bo ten drugi to wystąpi po przekroczeniu
-     * rozmiaru kolekcji, a my przecież odwołujemy się do wartości nullowej. Chociaż w sumie nulla nie ma, bo to Optional...*/
+    /** Myślałem wcześniej, że NullPointerException, ale sprawdziłem w dokumentacji, że NoSuchElementException.  */
 //    public Student getStudentByName(String input) {
 //        return studentRepository.findStudentByFirstName(input);
 //    }
@@ -59,7 +60,6 @@ public class StudentService {
     /** Hibernate ma wbudowany mechanizm "automatic dirty checking", który sprawdza, czy encja pobrana wcześniej
      * przez hibernate'a zmieniła stan. Jeżeli tak, to automatycznie ją zapisuje. Jeżeli nie zmieniła stanu,
      * to i tak nic się nie uaktualni.*/
-
     public void deleteStudent(Long id) {
         studentRepository.deleteById(id);
     }

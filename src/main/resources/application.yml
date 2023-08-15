@@ -5,6 +5,8 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
+    properties:
+      format_sql: true
     defer-datasource-initialization: true
     database-platform: PostgreSQL
     hibernate:

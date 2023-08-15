@@ -19,6 +19,7 @@ import lombok.ToString;
 )
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class StudentIdCard {
     @Id
@@ -45,7 +46,6 @@ public class StudentIdCard {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            /** Czy to zawsze funkcjonuje jako konkatenacja nazwy encji + "_" + nazwa kolumny (klucza)??  */
             name = "student_id",
             /** Czy to jest kolumna klucza głównego, czy obcego?? Tj. id w encji Student czy StudentIdCard?? */
             referencedColumnName = "id",
@@ -59,12 +59,14 @@ public class StudentIdCard {
         this.student = student;
     }
 
-    @Override
-    public String toString() {
-        return "StudentIdCard{" +
-                "id=" + id +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", student=" + student +
-                '}';
-    }
+/**  Tutaj można zastosować @ToString -
+     wszystkie pola mogą być generowane Lombokiem bez obawy o LazyInitializaitonException */
+//    @Override
+//    public String toString() {
+//        return "StudentIdCard{" +
+//                "id=" + id +
+//                ", cardNumber='" + cardNumber + '\'' +
+//                ", student=" + student +
+//                '}';
+//    }
 }

@@ -12,8 +12,9 @@ import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
-    /** Repository - służy do łączenia z db*/
+    /** Repository - służy do łączenia z db */
     Student findStudentByFirstName(String firstName);
+
     //    @Query("where student.age >= ?21")
     List<Student> findAllByAgeGreaterThanEqual(int age);
 
@@ -30,9 +31,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("DELETE from Student u where u.id = ?1")
     int deleteStudentById(Long id);
 
-//    @Override
-//    @Query( value = "select * from Student")
-//    List<Student> findAll();
-    /** Nie rozumiem sensu metod-zapytań i samych zapytań w repository....
-     *  Gdzie one są/mają być wywoływane??*/
+    /**  Poniższa metoda @Query jest napisana, aby obejść LazyInitializaitonException,
+     * inaczej dla List<Book> books @...ToMany FetchType musi być .EAGER, zamiast .LAZY.
+     * Zamiast niej można utworzy transakcję, ale wtedy będzie problem N + 1*/
+    @Query("SELECT s FROM Student s JOIN FETCH s.books WHERE s.id = :id")
+    Optional<Student> findByIdWithBooks(@Param("id") Long id);
 }

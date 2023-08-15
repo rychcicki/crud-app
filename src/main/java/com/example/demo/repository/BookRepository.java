@@ -10,4 +10,10 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Long> {
 //    List<Book> findByBookName(String bookName);
 
+    /** @Bean to obiekt, którym zarządza kontener IoC (odwrócenie sterowania - inversion of control):
+     * Zadaniem IoC jest inicjalizacja, konfiguracja, zasilanie danymi, zarządzanie cyklem życia
+     * piszesz logikę, a nie zarządzanie zależnościami
+     * (czy klasa jest nullem czy nie (czy klasa/bean będzie zainicjalizowany))
+     *
+     * Repository określa klasę, która spełnia rolę repozytorium, czyli obiektu dostępu do danych DAO*/
 }
